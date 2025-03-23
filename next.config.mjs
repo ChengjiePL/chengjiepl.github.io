@@ -1,19 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Enable static exports for GitHub Pages
-  output: 'export',
-  
-  // Configure image optimization
+  output: "export",
+
+  // Add these two lines - replace REPO_NAME with your actual repository name
+  basePath: "/portfolio",
+  assetPrefix: "/portfolio",
+
   images: {
-    unoptimized: true, // Required for static export
+    unoptimized: true,
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
       },
     ],
   },
-  
+
   // Disable unnecessary features for static sites
   eslint: {
     ignoreDuringBuilds: true,
@@ -24,4 +26,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-

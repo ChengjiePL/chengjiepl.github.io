@@ -1,12 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useCallback, memo } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { motion } from "framer-motion"
-import { Code, Database, Globe, Palette, Server, Cpu, GitBranch, Terminal, Layers } from "lucide-react"
+import { useState, useCallback, memo } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Code,
+  Database,
+  Globe,
+  Palette,
+  Server,
+  Cpu,
+  GitBranch,
+  Terminal,
+} from "lucide-react";
 
 // Skill categories with their respective skills
 const skillsData = {
@@ -41,55 +49,55 @@ const skillsData = {
     { name: "Vercel", level: 80 },
     { name: "VS Code", level: 90 },
   ],
-}
+};
 
 // Memoized skill bar component to prevent unnecessary re-renders
-const SkillBar = memo(({ skill, index }: { skill: { name: string; level: number }; index: number }) => {
-  return (
-    <Card key={skill.name}>
-      <CardContent className="pt-6">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="font-medium">{skill.name}</h3>
-          <span className="text-sm text-muted-foreground">{skill.level}%</span>
-        </div>
-        <div className="h-2 bg-accent rounded-full overflow-hidden">
-          <motion.div
-            className="h-full bg-primary"
-            initial={{ width: 0 }}
-            whileInView={{ width: `${skill.level}%` }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.8,
-              delay: 0.05 * index,
-              ease: "easeOut",
-            }}
-          />
-        </div>
-      </CardContent>
-    </Card>
-  )
-})
-SkillBar.displayName = "SkillBar"
+const SkillBar = memo(
+  ({ skill }: { skill: { name: string; level: number } }) => {
+    return (
+      <Card key={skill.name}>
+        <CardContent className="pt-6">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="font-medium">{skill.name}</h3>
+            <span className="text-sm text-muted-foreground">
+              {skill.level}%
+            </span>
+          </div>
+          <div className="h-2 bg-accent rounded-full overflow-hidden">
+            {/* Replace Framer Motion with plain CSS for better performance */}
+            <div
+              className="h-full bg-primary transition-all duration-1000 ease-out"
+              style={{ width: `${skill.level}%` }}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  },
+);
+SkillBar.displayName = "SkillBar";
 
 // Memoized tech icon component
-const TechIcon = memo(({ icon, name }: { icon: React.ReactNode; name: string }) => {
-  return (
-    <Card className="text-center hover:shadow-md transition-shadow">
-      <CardContent className="p-4 flex flex-col items-center justify-center">
-        <div className="p-3 bg-primary/10 rounded-full mb-3">{icon}</div>
-        <p className="text-sm font-medium">{name}</p>
-      </CardContent>
-    </Card>
-  )
-})
-TechIcon.displayName = "TechIcon"
+const TechIcon = memo(
+  ({ icon, name }: { icon: React.ReactNode; name: string }) => {
+    return (
+      <Card className="text-center hover:shadow-md transition-shadow">
+        <CardContent className="p-4 flex flex-col items-center justify-center">
+          <div className="p-3 bg-primary/10 rounded-full mb-3">{icon}</div>
+          <p className="text-sm font-medium">{name}</p>
+        </CardContent>
+      </Card>
+    );
+  },
+);
+TechIcon.displayName = "TechIcon";
 
 export default function Skills() {
-  const [activeTab, setActiveTab] = useState("frontend")
+  const [activeTab, setActiveTab] = useState("frontend");
 
   const handleTabChange = useCallback((value: string) => {
-    setActiveTab(value)
-  }, [])
+    setActiveTab(value);
+  }, []);
 
   return (
     <section id="skills" className="py-20 bg-background">
@@ -98,10 +106,15 @@ export default function Skills() {
           My <span className="text-primary">Skills</span>
         </h2>
         <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-          Here are some of the technologies and tools I work with. I'm constantly learning and expanding my skill set.
+          Here are some of the technologies and tools I work with. I'm
+          constantly learning and expanding my skill set.
         </p>
 
-        <Tabs defaultValue="frontend" className="max-w-3xl mx-auto" onValueChange={handleTabChange}>
+        <Tabs
+          defaultValue="frontend"
+          className="max-w-3xl mx-auto"
+          onValueChange={handleTabChange}
+        >
           <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-8">
             <TabsTrigger value="frontend" className="flex items-center gap-2">
               <Globe className="h-4 w-4" />
@@ -124,8 +137,8 @@ export default function Skills() {
           {Object.entries(skillsData).map(([category, skills]) => (
             <TabsContent key={category} value={category} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {skills.map((skill, index) => (
-                  <SkillBar key={skill.name} skill={skill} index={index} />
+                {skills.map((skill) => (
+                  <SkillBar key={skill.name} skill={skill} />
                 ))}
               </div>
             </TabsContent>
@@ -133,24 +146,27 @@ export default function Skills() {
         </Tabs>
 
         <div className="mt-16">
-          <h3 className="text-2xl font-semibold text-center mb-8">Other Technologies</h3>
+          <h3 className="text-2xl font-semibold text-center mb-8">
+            Other Technologies
+          </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {[
               { icon: <Code />, name: "JavaScript" },
               { icon: <Cpu />, name: "TypeScript" },
-              { icon: <Layers />, name: "React" },
-              { icon: <Globe />, name: "Next.js" },
+              { icon: <Globe />, name: "React" },
               { icon: <Server />, name: "Node.js" },
               { icon: <Database />, name: "MongoDB" },
               { icon: <Palette />, name: "Tailwind" },
               { icon: <GitBranch />, name: "Git" },
-            ].map((tech) => (
-              <TechIcon key={tech.name} icon={tech.icon} name={tech.name} />
-            ))}
+              { icon: <Terminal />, name: "CLI" },
+            ]
+              .slice(0, 8)
+              .map((tech) => (
+                <TechIcon key={tech.name} icon={tech.icon} name={tech.name} />
+              ))}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
-

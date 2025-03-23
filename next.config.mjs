@@ -1,13 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable static exports for GitHub Pages
   output: "export",
 
-  // Add these two lines - replace REPO_NAME with your actual repository name
+  // Set the base path for GitHub Pages
   basePath: "/portfolio",
   assetPrefix: "/portfolio",
 
+  // Configure image optimization
   images: {
-    unoptimized: true,
+    unoptimized: true, // Required for static export
     remotePatterns: [
       {
         protocol: "https",
@@ -22,6 +24,16 @@ const nextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
+  },
+
+  // Optimize bundle size
+  swcMinify: true,
+
+  // Add webpack optimization
+  webpack: (config) => {
+    // This helps reduce bundle size
+    config.optimization.minimize = true;
+    return config;
   },
 };
 

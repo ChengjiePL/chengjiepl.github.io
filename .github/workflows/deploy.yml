@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
 
+# Set the required permissions
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -15,6 +21,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -26,4 +33,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: out
-          branch: gh-pages
+          clean: true # Automatically remove deleted files from the deploy branch

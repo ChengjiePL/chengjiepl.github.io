@@ -5,7 +5,7 @@ import type React from "react";
 import { useState, useCallback, memo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Code, GitBranch, Terminal } from "lucide-react";
+import { GitBranch, Terminal } from "lucide-react";
 
 import { FaDocker, AiOutlineKubernetes, Code, FcLinux } from "react-icons/fa";
 

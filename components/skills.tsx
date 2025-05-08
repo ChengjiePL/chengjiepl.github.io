@@ -5,7 +5,16 @@ import type React from "react";
 import { useState, useCallback, memo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GitBranch, Terminal, Code } from "lucide-react";
+import {
+  Code,
+  Database,
+  Globe,
+  Palette,
+  Server,
+  Cpu,
+  GitBranch,
+  Terminal,
+} from "lucide-react";
 
 import { AiOutlineKubernetes } from "react-icons/ai";
 import { FaDocker } from "react-icons/fa";

@@ -24,7 +24,8 @@ export default async function Hero({ username }: HeroProps) {
               <span className="text-primary">{user.name || username}</span>
             </h1>
             <p className="text-xl text-muted-foreground">
-              {user.bio || "Software Developer & GitHub Enthusiast"}
+              {user.bio ||
+                "Computer Enginneering student with a passion for cybersecurity and DevOps."}
             </p>
             <div className="flex flex-wrap gap-4">
               <Button

@@ -1,4 +1,4 @@
-import { Github, Gmail, Linkedin } from "lucide-react";
+import { Github, Mail, Linkedin } from "lucide-react";
 import Link from "next/link";
 
 interface FooterProps {
@@ -28,7 +28,7 @@ export default function Footer({ username }: FooterProps) {
               <Github className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
             </Link>
             <Link href="mailto:chengjiepeng90@gmail.com" aria-label="Email">
-              <Gmail className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
+              <Mail className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
             </Link>
             <Link
               href="https://www.linkedin.com/in/chengjie-peng/"

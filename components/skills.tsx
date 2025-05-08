@@ -19,6 +19,7 @@ import {
 import { AiOutlineKubernetes } from "react-icons/ai";
 import { FaDocker } from "react-icons/fa";
 import { FcLinux } from "react-icons/fc";
+import { SiHackthebox } from "react-icons/si";
 
 // Skill categories with their respective skills
 const skillsData = {

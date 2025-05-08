@@ -22,11 +22,15 @@ export default async function About({ username }: AboutProps) {
             <p className="text-muted-foreground leading-relaxed">
               {user.bio ||
                 `I’m a Computer Engineering student with a deep passion for cybersecurity and DevOps. 
-                 I thrive on exploring the ever‑evolving world of information security—learning ethical hacking techniques,
-                 vulnerability analysis, and secure system design—and applying those skills in real‑world projects. 
-                 At the same time, I love automating infrastructure, building CI/CD pipelines, 
-                 and containerizing applications to make development and deployment smoother and more reliable.
+                 I thrive on exploring the ever evolving world of information security learning ethical hacking techniques,
+                 vulnerability analysis, and secure system design—and applying those skills in realworld projects. 
               `}
+            </p>
+
+            <p className="text-muted-foreground leading-relaxed">
+              At the same time, I love automating infrastructure, building CI/CD
+              pipelines, and containerizing applications to make development and
+              deployment smoother and more reliable.
             </p>
           </div>
 

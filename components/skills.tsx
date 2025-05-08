@@ -115,45 +115,7 @@ export default function Skills() {
           constantly learning and expanding my skill set.
         </p>
 
-        <Tabs
-          defaultValue="frontend"
-          className="max-w-3xl mx-auto"
-          onValueChange={handleTabChange}
-        >
-          <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-8">
-            <TabsTrigger value="frontend" className="flex items-center gap-2">
-              <Globe className="h-4 w-4" />
-              <span>Frontend</span>
-            </TabsTrigger>
-            <TabsTrigger value="backend" className="flex items-center gap-2">
-              <Server className="h-4 w-4" />
-              <span>Backend</span>
-            </TabsTrigger>
-            <TabsTrigger value="database" className="flex items-center gap-2">
-              <Database className="h-4 w-4" />
-              <span>Database</span>
-            </TabsTrigger>
-            <TabsTrigger value="tools" className="flex items-center gap-2">
-              <Terminal className="h-4 w-4" />
-              <span>Tools</span>
-            </TabsTrigger>
-          </TabsList>
-
-          {Object.entries(skillsData).map(([category, skills]) => (
-            <TabsContent key={category} value={category} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {skills.map((skill) => (
-                  <SkillBar key={skill.name} skill={skill} />
-                ))}
-              </div>
-            </TabsContent>
-          ))}
-        </Tabs>
-
         <div className="mt-16">
-          <h3 className="text-2xl font-semibold text-center mb-8">
-            Other Technologies
-          </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {[
               { icon: <Code />, name: "Scripting" },

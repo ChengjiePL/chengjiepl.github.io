@@ -8,9 +8,8 @@ import Footer from "@/components/footer";
 
 // Static metadata for better SEO
 export const metadata = {
-  title: "GitHub Portfolio | ChengjiePL",
-  description:
-    "Personal portfolio website showcasing projects and skills from GitHub",
+  title: "Chengjie",
+  description: "Personal portfolio website showcasing projects and skills",
 };
 
 export default function Home() {

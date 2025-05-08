@@ -1,13 +1,13 @@
-import { fetchGitHubUser } from "@/lib/github"
-import { Card, CardContent } from "@/components/ui/card"
-import { Users, MapPin, Calendar, LinkIcon } from "lucide-react"
+import { fetchGitHubUser } from "@/lib/github";
+import { Card, CardContent } from "@/components/ui/card";
+import { Users, MapPin, Calendar, LinkIcon } from "lucide-react";
 
 interface AboutProps {
-  username: string
+  username: string;
 }
 
 export default async function About({ username }: AboutProps) {
-  const user = await fetchGitHubUser(username)
+  const user = await fetchGitHubUser(username);
 
   return (
     <section id="about" className="py-20 bg-background">
@@ -21,14 +21,12 @@ export default async function About({ username }: AboutProps) {
             <h3 className="text-2xl font-semibold">Who I Am</h3>
             <p className="text-muted-foreground leading-relaxed">
               {user.bio ||
-                `I'm a passionate developer with a focus on creating elegant solutions to complex problems. 
-                My journey in software development has equipped me with a diverse skill set and a deep 
-                understanding of modern technologies.`}
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              I'm constantly learning and exploring new technologies to stay at the forefront of the ever-evolving tech
-              landscape. My goal is to build applications that are not only functional but also provide exceptional user
-              experiences.
+                `I’m a Computer Engineering student with a deep passion for cybersecurity and DevOps. 
+                 I thrive on exploring the ever‑evolving world of information security—learning ethical hacking techniques,
+                 vulnerability analysis, and secure system design—and applying those skills in real‑world projects. 
+                 At the same time, I love automating infrastructure, building CI/CD pipelines, 
+                 and containerizing applications to make development and deployment smoother and more reliable.
+              `}
             </p>
           </div>
 
@@ -42,7 +40,9 @@ export default async function About({ username }: AboutProps) {
                         <MapPin className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <p className="text-sm text-muted-foreground">Location</p>
+                        <p className="text-sm text-muted-foreground">
+                          Location
+                        </p>
                         <p className="font-medium">{user.location}</p>
                       </div>
                     </div>
@@ -54,7 +54,9 @@ export default async function About({ username }: AboutProps) {
                         <Users className="h-5 w-5 text-primary" />
                       </div>
                       <div>
-                        <p className="text-sm text-muted-foreground">Followers</p>
+                        <p className="text-sm text-muted-foreground">
+                          Followers
+                        </p>
                         <p className="font-medium">{user.followers}</p>
                       </div>
                     </div>
@@ -67,7 +69,9 @@ export default async function About({ username }: AboutProps) {
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Joined</p>
-                        <p className="font-medium">{new Date(user.created_at).toLocaleDateString()}</p>
+                        <p className="font-medium">
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -80,7 +84,11 @@ export default async function About({ username }: AboutProps) {
                       <div>
                         <p className="text-sm text-muted-foreground">Website</p>
                         <a
-                          href={user.blog.startsWith("http") ? user.blog : `https://${user.blog}`}
+                          href={
+                            user.blog.startsWith("http")
+                              ? user.blog
+                              : `https://${user.blog}`
+                          }
                           target="_blank"
                           rel="noopener noreferrer"
                           className="font-medium hover:text-primary transition-colors"
@@ -99,11 +107,17 @@ export default async function About({ username }: AboutProps) {
                 <h3 className="text-xl font-semibold mb-4">GitHub Stats</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="bg-accent/50 p-4 rounded-lg text-center">
-                    <p className="text-2xl font-bold">{user.public_repos || 0}</p>
-                    <p className="text-sm text-muted-foreground">Repositories</p>
+                    <p className="text-2xl font-bold">
+                      {user.public_repos || 0}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Repositories
+                    </p>
                   </div>
                   <div className="bg-accent/50 p-4 rounded-lg text-center">
-                    <p className="text-2xl font-bold">{user.public_gists || 0}</p>
+                    <p className="text-2xl font-bold">
+                      {user.public_gists || 0}
+                    </p>
                     <p className="text-sm text-muted-foreground">Gists</p>
                   </div>
                 </div>
@@ -113,6 +127,5 @@ export default async function About({ username }: AboutProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }
-

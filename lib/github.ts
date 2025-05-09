@@ -44,7 +44,7 @@ export interface GitHubRepo {
 export const defaultUser: Partial<GitHubUser> = {
   login: "ChengjiePL",
   name: "Chengjie",
-  avatar_url: "/portfolio/placeholder.svg?height=400&width=400",
+  avatar_url: "/placeholder.svg?height=400&width=400",
   bio: "Software Developer & GitHub Enthusiast",
   public_repos: 10,
   followers: 5,

@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getBasePath() {
-  return process.env.NODE_ENV === "production" ? "/REPO_NAME" : "";
+  return process.env.NODE_ENV === "production" ? "" : "";
 }

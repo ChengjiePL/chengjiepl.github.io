@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { fetchGitHubRepos } from "@/lib/github";
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -20,117 +19,138 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+// Define the repo type based on the GitHub API response
+interface Repo {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+  homepage: string | null;
+  language: string | null;
+  stargazers_count: number;
+  forks_count: number;
+  watchers_count: number;
+  topics: string[];
+}
 
 interface ProjectsProps {
   username: string;
+  initialRepos?: Repo[]; // Optional prop for SSR
 }
 
-export default function Projects({ username }: ProjectsProps) {
-  const [repos, setRepos] = useState([]);
+export default function Projects({
+  username,
+  initialRepos = [],
+}: ProjectsProps) {
+  const [repos, setRepos] = useState<Repo[]>(initialRepos);
+  const [loading, setLoading] = useState(initialRepos.length === 0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const visibleProjects = 3; // Number of visible projects at once (on desktop)
+  const [autoScroll, setAutoScroll] = useState(true);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
+  // Fetch repos on component mount
   useEffect(() => {
-    const getRepos = async () => {
-      setIsLoading(true);
+    const fetchRepos = async () => {
       try {
-        // Fetch more repos to have a better carousel effect
-        const data = await fetchGitHubRepos(username, 10);
-        // Sort repos by stars
-        const sortedData = [...data].sort(
-          (a, b) => b.stargazers_count - a.stargazers_count,
+        setLoading(true);
+        const response = await fetch(
+          `https://api.github.com/users/${username}/repos?per_page=100&sort=updated`,
         );
-        setRepos(sortedData);
+        if (!response.ok) throw new Error("Failed to fetch repositories");
+        const data = await response.json();
+        setRepos(data);
       } catch (error) {
-        console.error("Error fetching repos", error);
+        console.error("Error fetching repositories:", error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
-    getRepos();
-  }, [username]);
+    if (initialRepos.length === 0) {
+      fetchRepos();
+    }
+  }, [username, initialRepos]);
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + 1 >= repos.length ? 0 : prevIndex + 1,
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex - 1 < 0 ? repos.length - 1 : prevIndex - 1,
-    );
-  };
-
-  // Auto scroll effect
+  // Auto-scroll effect
   useEffect(() => {
+    if (!autoScroll || repos.length <= 3) return;
+
     const interval = setInterval(() => {
-      nextSlide();
-    }, 5000); // Change slide every 5 seconds
+      setCurrentIndex(
+        (prevIndex) => (prevIndex + 1) % Math.max(1, repos.length - 2),
+      );
+    }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(interval);
-  }, [repos.length]);
+  }, [autoScroll, repos.length]);
 
-  // Function to get visible repos with wrap-around
-  const getVisibleRepos = () => {
-    if (repos.length === 0) return [];
+  // Pause auto-scroll when hovering over carousel
+  const handleMouseEnter = () => setAutoScroll(false);
+  const handleMouseLeave = () => setAutoScroll(true);
 
-    const result = [];
-    for (let i = 0; i < visibleProjects; i++) {
-      const index = (currentIndex + i) % repos.length;
-      result.push(repos[index]);
-    }
-    return result;
+  // Manual navigation
+  const scrollPrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? Math.max(0, repos.length - 3) : prevIndex - 1,
+    );
+  };
+
+  const scrollNext = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex + 1) % Math.max(1, repos.length - 2),
+    );
   };
 
   return (
-    <section id="projects" className="py-20 bg-accent/10 overflow-hidden">
+    <section id="projects" className="py-20 bg-accent/10">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           My <span className="text-primary">Projects</span>
         </h2>
         <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-          Here are some of my public GitHub repositories. These projects
-          showcase my skills.
+          Browse through my GitHub projects. Hover over the carousel to pause
+          the automatic scrolling.
         </p>
 
-        {isLoading ? (
-          <div className="text-center">Loading projects...</div>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
         ) : (
-          <div className="relative">
-            <div className="flex justify-between items-center absolute top-1/2 w-full -translate-y-1/2 z-10 px-4">
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full bg-background/80 backdrop-blur-sm shadow-md"
-                onClick={prevSlide}
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full bg-background/80 backdrop-blur-sm shadow-md"
-                onClick={nextSlide}
-              >
-                <ChevronRight className="h-6 w-6" />
-              </Button>
-            </div>
+          <div
+            className="relative"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Navigation buttons */}
+            <button
+              onClick={scrollPrev}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-background/80 rounded-full p-2 shadow-md hover:bg-background"
+              aria-label="Previous project"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
 
-            <div className="overflow-hidden">
+            <button
+              onClick={scrollNext}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-background/80 rounded-full p-2 shadow-md hover:bg-background"
+              aria-label="Next project"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+
+            {/* Carousel container */}
+            <div ref={carouselRef} className="overflow-hidden">
               <div
-                className="flex transition-transform duration-500 ease-in-out gap-6"
-                style={{
-                  transform: `translateX(${-currentIndex * (100 / visibleProjects)}%)`,
-                }}
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}
               >
                 {repos.map((repo) => (
                   <Card
                     key={repo.id}
-                    className="flex-shrink-0 flex flex-col w-full md:w-[calc(100%/3-1rem)] transition-all 
-                               hover:shadow-lg hover:-translate-y-1"
+                    className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-2 flex flex-col h-full transition-all hover:shadow-lg"
                   >
                     <CardHeader>
                       <CardTitle className="flex justify-between items-start">
@@ -208,6 +228,25 @@ export default function Projects({ username }: ProjectsProps) {
                   </Card>
                 ))}
               </div>
+            </div>
+
+            {/* Pagination dots */}
+            <div className="flex justify-center mt-6 gap-2">
+              {Array.from({ length: Math.max(1, repos.length - 2) }).map(
+                (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentIndex(index)}
+                    className={cn(
+                      "w-2 h-2 rounded-full transition-all",
+                      currentIndex === index
+                        ? "bg-primary w-4"
+                        : "bg-primary/30",
+                    )}
+                    aria-label={`Go to project ${index + 1}`}
+                  />
+                ),
+              )}
             </div>
           </div>
         )}

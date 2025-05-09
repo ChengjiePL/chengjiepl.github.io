@@ -30,7 +30,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://api.github.com" />
 
         {/* Add preload for critical assets */}
-        <link rel="preload" href="/portfolio/placeholder.svg" as="image" />
+        <link rel="preload" href="/placeholder.svg" as="image" />
       </head>
       <body className={inter.className}>
         <ThemeProvider

@@ -52,10 +52,7 @@ export default async function Hero({ username }: HeroProps) {
           <div className="md:w-1/2 flex justify-center">
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary/20 shadow-xl">
               <Image
-                src={
-                  user.avatar_url ||
-                  "/portfolio/placeholder.svg?height=320&width=320"
-                }
+                src={user.avatar_url || "/placeholder.svg?height=320&width=320"}
                 alt={`${user.name || username}'s profile`}
                 fill
                 sizes="(max-width: 768px) 256px, 320px"

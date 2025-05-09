@@ -41,10 +41,13 @@ export default function TypingAnimation({
       } else {
         // Continue typing
         const initialDelay = currentIndex === 0 ? startDelay : 0;
-        timeout = setTimeout(() => {
-          setDisplayedText(prev => prev + text[currentIndex]);
-          setCurrentIndex(prev => prev + 1);
-        }, initialDelay + Math.random() * typingSpeed * 0.5 + typingSpeed * 0.75);
+        timeout = setTimeout(
+          () => {
+            setDisplayedText((prev) => prev + text[currentIndex]);
+            setCurrentIndex((prev) => prev + 1);
+          },
+          initialDelay + Math.random() * typingSpeed * 0.5 + typingSpeed * 0.75,
+        );
       }
     }
     // Erasing mode
@@ -59,14 +62,24 @@ export default function TypingAnimation({
       } else {
         // Continue erasing
         timeout = setTimeout(() => {
-          setDisplayedText(prev => prev.slice(0, -1));
-          setCurrentIndex(prev => prev - 1);
+          setDisplayedText((prev) => prev.slice(0, -1));
+          setCurrentIndex((prev) => prev - 1);
         }, erasingSpeed);
       }
     }
 
     return () => clearTimeout(timeout);
-  }, [currentIndex, text, typingSpeed, erasingSpeed, delayAfterTyping, delayAfterErasing, startDelay, isTyping, isPaused]);
+  }, [
+    currentIndex,
+    text,
+    typingSpeed,
+    erasingSpeed,
+    delayAfterTyping,
+    delayAfterErasing,
+    startDelay,
+    isTyping,
+    isPaused,
+  ]);
 
   return (
     <span className={className}>
@@ -75,4 +88,3 @@ export default function TypingAnimation({
     </span>
   );
 }
-`

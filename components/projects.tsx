@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { fetchGitHubRepos } from "@/lib/github";
 import {
   Card,
@@ -14,14 +17,33 @@ interface ProjectsProps {
   username: string;
 }
 
-export default async function Projects({ username }: ProjectsProps) {
-  // Only fetch 6 repos to improve performance
-  const repos = await fetchGitHubRepos(username, 6);
+export default function Projects({ username }: ProjectsProps) {
+  const [repos, setRepos] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Sort repos by stars
-  const sortedRepos = [...repos].sort(
-    (a, b) => b.stargazers_count - a.stargazers_count,
-  );
+  useEffect(() => {
+    const getRepos = async () => {
+      setIsLoading(true);
+      try {
+        // Get all repositories instead of just 6
+        const data = await fetchGitHubRepos(username, 10);
+        // Sort repos by stars
+        const sortedData = [...data].sort(
+          (a, b) => b.stargazers_count - a.stargazers_count,
+        );
+        setRepos(sortedData);
+      } catch (error) {
+        console.error("Error fetching repos", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getRepos();
+  }, [username]);
+
+  // Duplicate repos to create continuous scrolling effect
+  const scrollContent = [...repos, ...repos];
 
   return (
     <section id="projects" className="py-20 bg-accent/10">
@@ -34,88 +56,97 @@ export default async function Projects({ username }: ProjectsProps) {
           showcase my skills.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedRepos.map((repo) => (
-            <Card
-              key={repo.id}
-              className="flex flex-col h-full transition-all hover:shadow-lg hover:-translate-y-1"
-            >
-              <CardHeader>
-                <CardTitle className="flex justify-between items-start">
-                  <span className="truncate">{repo.name}</span>
-                </CardTitle>
-                <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                  <div className="flex items-center">
-                    <Star className="h-4 w-4 mr-1" />
-                    <span>{repo.stargazers_count}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <GitFork className="h-4 w-4 mr-1" />
-                    <span>{repo.forks_count}</span>
-                  </div>
-                  {repo.watchers_count > 0 && (
-                    <div className="flex items-center">
-                      <Eye className="h-4 w-4 mr-1" />
-                      <span>{repo.watchers_count}</span>
-                    </div>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-muted-foreground text-sm line-clamp-3">
-                  {repo.description || "No description provided."}
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {repo.language && (
-                    <Badge variant="secondary">{repo.language}</Badge>
-                  )}
-                  {repo.topics &&
-                    repo.topics.slice(0, 2).map((topic) => (
-                      <Badge key={topic} variant="outline">
-                        {topic}
-                      </Badge>
-                    ))}
-                </div>
-              </CardContent>
-              <CardFooter className="pt-2">
-                <div className="flex gap-2 w-full">
-                  <Button
-                    asChild
-                    variant="default"
-                    size="sm"
-                    className="flex-1"
+        {isLoading ? (
+          <div className="text-center py-12">Loading projects...</div>
+        ) : (
+          <div className="relative overflow-hidden w-full">
+            <div className="projects-scroll-container w-full overflow-hidden">
+              <div className="projects-scroll flex animate-marquee gap-6">
+                {scrollContent.map((repo, index) => (
+                  <Card
+                    key={`${repo.id}-${index}`}
+                    className="flex-shrink-0 flex flex-col w-[300px] lg:w-[350px] transition-all hover:shadow-lg"
+                    style={{ animationDelay: `${index * 0.5}s` }}
                   >
-                    <a
-                      href={repo.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="h-4 w-4 mr-2" />
-                      Code
-                    </a>
-                  </Button>
-                  {repo.homepage && (
-                    <Button
-                      asChild
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                    >
-                      <a
-                        href={repo.homepage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Demo
-                      </a>
-                    </Button>
-                  )}
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="flex justify-between items-start">
+                        <span className="truncate">{repo.name}</span>
+                      </CardTitle>
+                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                        <div className="flex items-center">
+                          <Star className="h-4 w-4 mr-1" />
+                          <span>{repo.stargazers_count}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <GitFork className="h-4 w-4 mr-1" />
+                          <span>{repo.forks_count}</span>
+                        </div>
+                        {repo.watchers_count > 0 && (
+                          <div className="flex items-center">
+                            <Eye className="h-4 w-4 mr-1" />
+                            <span>{repo.watchers_count}</span>
+                          </div>
+                        )}
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex-grow py-2">
+                      <p className="text-muted-foreground text-sm line-clamp-2">
+                        {repo.description || "No description provided."}
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {repo.language && (
+                          <Badge variant="secondary">{repo.language}</Badge>
+                        )}
+                        {repo.topics &&
+                          repo.topics.slice(0, 2).map((topic) => (
+                            <Badge key={topic} variant="outline">
+                              {topic}
+                            </Badge>
+                          ))}
+                      </div>
+                    </CardContent>
+                    <CardFooter className="pt-2">
+                      <div className="flex gap-2 w-full">
+                        <Button
+                          asChild
+                          variant="default"
+                          size="sm"
+                          className="flex-1"
+                        >
+                          <a
+                            href={repo.html_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Github className="h-4 w-4 mr-2" />
+                            Code
+                          </a>
+                        </Button>
+                        {repo.homepage && (
+                          <Button
+                            asChild
+                            variant="outline"
+                            size="sm"
+                            className="flex-1"
+                          >
+                            <a
+                              href={repo.homepage}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Demo
+                            </a>
+                          </Button>
+                        )}
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="text-center mt-12">
           <Button asChild variant="outline">

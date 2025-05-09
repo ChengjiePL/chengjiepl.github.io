@@ -4,8 +4,8 @@ const nextConfig = {
   output: "export",
 
   // Set the base path for GitHub Pages
-  basePath: "/chengjiepl.github.io",
-  assetPrefix: "/chengjiepl.github.io",
+  basePath: "",
+  assetPrefix: "",
 
   // Configure image optimization
   images: {
@@ -25,9 +25,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-
-  // Optimize bundle size
-  swcMinify: true,
 
   // Add webpack optimization
   webpack: (config) => {

@@ -8,77 +8,67 @@ interface TypingAnimationProps {
   erasingSpeed?: number;
   delayAfterTyping?: number;
   delayAfterErasing?: number;
-  startDelay?: number;
   className?: string;
 }
 
 export default function TypingAnimation({
   text,
   typingSpeed = 100,
-  erasingSpeed = 50, // Erasing is typically faster than typing
-  delayAfterTyping = 1500, // Pause after typing completes
-  delayAfterErasing = 500, // Pause after erasing completes
-  startDelay = 500,
+  erasingSpeed = 50,
+  delayAfterTyping = 2000,
+  delayAfterErasing = 500,
   className,
 }: TypingAnimationProps) {
   const [displayedText, setDisplayedText] = useState("");
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isDelaying, setIsDelaying] = useState(false);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
-    // Typing mode
-    if (isTyping && !isPaused) {
-      if (currentIndex >= text.length) {
-        // Typing complete, pause before erasing
-        setIsPaused(true);
-        timeout = setTimeout(() => {
-          setIsPaused(false);
-          setIsTyping(false);
-        }, delayAfterTyping);
-      } else {
+    if (isDelaying) {
+      // We're in a delay phase
+      const delayTime = isTyping ? delayAfterTyping : delayAfterErasing;
+      timeout = setTimeout(() => {
+        setIsDelaying(false);
+        setIsTyping(!isTyping);
+      }, delayTime);
+    } else if (isTyping) {
+      // We're in typing phase
+      if (displayedText.length < text.length) {
         // Continue typing
-        const initialDelay = currentIndex === 0 ? startDelay : 0;
-        timeout = setTimeout(
-          () => {
-            setDisplayedText((prev) => prev + text[currentIndex]);
-            setCurrentIndex((prev) => prev + 1);
-          },
-          initialDelay + Math.random() * typingSpeed * 0.5 + typingSpeed * 0.75,
-        );
-      }
-    }
-    // Erasing mode
-    else if (!isTyping && !isPaused) {
-      if (currentIndex <= 0) {
-        // Erasing complete, pause before typing again
-        setIsPaused(true);
         timeout = setTimeout(() => {
-          setIsPaused(false);
-          setIsTyping(true);
-        }, delayAfterErasing);
+          setDisplayedText(text.substring(0, displayedText.length + 1));
+        }, typingSpeed);
       } else {
+        // Typing complete, start delay
+        setIsDelaying(true);
+      }
+    } else {
+      // We're in erasing phase
+      if (displayedText.length > 0) {
         // Continue erasing
         timeout = setTimeout(() => {
-          setDisplayedText((prev) => prev.slice(0, -1));
-          setCurrentIndex((prev) => prev - 1);
+          setDisplayedText(
+            displayedText.substring(0, displayedText.length - 1),
+          );
         }, erasingSpeed);
+      } else {
+        // Erasing complete, start delay
+        setIsDelaying(true);
       }
     }
 
     return () => clearTimeout(timeout);
   }, [
-    currentIndex,
+    displayedText,
+    isTyping,
+    isDelaying,
     text,
     typingSpeed,
     erasingSpeed,
     delayAfterTyping,
     delayAfterErasing,
-    startDelay,
-    isTyping,
-    isPaused,
   ]);
 
   return (

@@ -4,6 +4,7 @@ import { fetchGitHubUser, defaultUser } from "@/lib/github";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
 import Image from "next/image";
+import TypingAnimation from "@/components/typing-animation";
 
 interface HeroProps {
   username: string;
@@ -20,8 +21,7 @@ export default async function Hero({ username }: HeroProps) {
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
           <div className="md:w-1/2 space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Hi, I'm{" "}
-              <span className="text-primary">{user.name || username}</span>
+              <TypingAnimation text={`Hi, I'm ${user.name || username}`} />
             </h1>
             <p className="text-xl text-muted-foreground">
               {user.bio ||

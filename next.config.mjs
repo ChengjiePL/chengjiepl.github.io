@@ -4,8 +4,8 @@ const nextConfig = {
   output: "export",
 
   // Set the base path for GitHub Pages
-  basePath: "/portfolio",
-  assetPrefix: "/portfolio",
+  basePath: "/chengjiepl.github.io",
+  assetPrefix: "/chengjiepl.github.io",
 
   // Configure image optimization
   images: {

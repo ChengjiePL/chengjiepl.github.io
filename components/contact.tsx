@@ -56,25 +56,25 @@ export default async function Contact({ username }: ContactProps) {
                       </div>
                     )}
 
-                    {website && (
-                      <div className="flex items-center gap-3">
-                        <div className="bg-primary/10 p-2 rounded-full">
-                          <Globe className="h-5 w-5 text-primary" />
-                        </div>
-                        <a
-                          href={
-                            website.startsWith("http")
-                              ? website
-                              : `https://${website}`
-                          }
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-foreground hover:text-primary transition-colors"
-                        >
-                          {website}
-                        </a>
-                      </div>
-                    )}
+                    {/* {website && ( */}
+                    {/*   <div className="flex items-center gap-3"> */}
+                    {/*     <div className="bg-primary/10 p-2 rounded-full"> */}
+                    {/*       <Globe className="h-5 w-5 text-primary" /> */}
+                    {/*     </div> */}
+                    {/*     <a */}
+                    {/*       href={ */}
+                    {/*         website.startsWith("http") */}
+                    {/*           ? website */}
+                    {/*           : `https://${website}` */}
+                    {/*       } */}
+                    {/*       target="_blank" */}
+                    {/*       rel="noopener noreferrer" */}
+                    {/*       className="text-foreground hover:text-primary transition-colors" */}
+                    {/*     > */}
+                    {/*       {website} */}
+                    {/*     </a> */}
+                    {/*   </div> */}
+                    {/* )} */}
 
                     <div className="flex items-center gap-3">
                       <div className="bg-primary/10 p-2 rounded-full">

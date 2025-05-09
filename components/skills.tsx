@@ -118,12 +118,12 @@ export default function Skills() {
         <div className="mt-16">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {[
-              { icon: <Code />, name: "Scripting" },
               { icon: <FcLinux />, name: "Linux" },
+              { icon: <Code />, name: "Scripting" },
               { icon: <SiHackthebox />, name: "Pentesting Tools" },
+              { icon: <Terminal />, name: "CLI" },
               { icon: <FaDocker />, name: "Docker" },
               { icon: <AiOutlineKubernetes />, name: "Kubernetes" },
-              { icon: <Terminal />, name: "CLI" },
             ]
               .slice(0, 8)
               .map((tech) => (

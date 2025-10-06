@@ -132,7 +132,7 @@ export default function Skills() {
               { icon: <FaJenkins />, name: "Jenkins" },
               { icon: <TbBrandAnsible />, name: "Ansible" },
             ]
-              {/* .slice(0, 8) */}
+              .slice(0, 12)
               .map((tech) => (
                 <TechIcon key={tech.name} icon={tech.icon} name={tech.name} />
               ))}

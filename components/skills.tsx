@@ -17,9 +17,11 @@ import {
 } from "lucide-react";
 
 import { AiOutlineKubernetes } from "react-icons/ai";
-import { FaDocker } from "react-icons/fa";
+import { FaDocker, FaPython, FaAws } from "react-icons/fa";
 import { FcLinux } from "react-icons/fc";
 import { SiHackthebox } from "react-icons/si";
+import { TbBrandCpp, TbBrandAnsible } from 'react-icons/tb';
+import { DiJenkins } from 'react-icons/di';
 
 // Skill categories with their respective skills
 const skillsData = {
@@ -120,10 +122,15 @@ export default function Skills() {
             {[
               { icon: <FcLinux />, name: "Linux" },
               { icon: <Code />, name: "Scripting" },
+              { icon: <TbBrandCpp />, name: "C/C++" },
+              { icon: <FaPython />, name: "Python" },
               { icon: <SiHackthebox />, name: "Pentesting Tools" },
               { icon: <Terminal />, name: "CLI" },
-              { icon: <FaDocker />, name: "Docker" },
+              { icon: <FaAws />, name: "AWS" },
               { icon: <AiOutlineKubernetes />, name: "Kubernetes" },
+              { icon: <FaDocker />, name: "Docker" },
+              { icon: <DiJenkins />, name: "Jenkins" },
+              { icon: <TbBrandAnsible />, name: "Ansible" },
             ]
               .slice(0, 8)
               .map((tech) => (

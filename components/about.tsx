@@ -21,12 +21,12 @@ export default async function About({ username }: AboutProps) {
             <h3 className="text-2xl font-semibold">Who I Am</h3>
             <p className="text-muted-foreground leading-relaxed">
               {user.bio ||
-                `I am a Computer Engineering and DevOps Engineer, dedicated to building secure, automated, and scalable environments. My profile sits at the intersection of Infrastructure, Security, and Development, with a focus on modern software practices.  On the DevOps side, I specialize in automating infrastructure, architecting efficient CI/CD pipelines, and containerizing applications to ensure seamless and reliable deployments.  At the same time, my background in Cybersecurity drives me to design secure systems from the ground up. I enjoy applying ethical hacking techniques and vulnerability analysis to ensure that every pipeline and container I build is resilient against modern threats.`}
+                `I am a Computer Engineering and DevOps Engineer, dedicated to building secure, automated, and scalable environments.
+                  My profile sits at the intersection of Infrastructure, Security, and Development, with a focus on modern software practices.
+                `}
             </p>
-
+              On the DevOps side, I specialize in automating infrastructure, architecting efficient CI/CD pipelines, and containerizing applications to ensure seamless and reliable deployments.
             <p className="text-muted-foreground leading-relaxed">
-              At the same time, my background in Cybersecurity drives me to design secure systems from the ground up.
-              I enjoy applying ethical hacking techniques and vulnerability analysis to ensure that every pipeline and container I build is resilient against modern threats.
             </p>
           </div>
 

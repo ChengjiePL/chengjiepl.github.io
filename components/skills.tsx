@@ -19,7 +19,7 @@ import {
 import { AiOutlineKubernetes } from "react-icons/ai";
 import { FaDocker, FaPython, FaAws, FaJenkins } from "react-icons/fa";
 import { FcLinux } from "react-icons/fc";
-import { SiHackthebox } from "react-icons/si";
+import { SiHackthebox, SiTerraform } from "react-icons/si";
 import { TbBrandCpp, TbBrandAnsible } from 'react-icons/tb';
 import { DiJenkins } from 'react-icons/di';
 
@@ -131,6 +131,7 @@ export default function Skills() {
               { icon: <FaDocker />, name: "Docker" },
               { icon: <FaJenkins />, name: "Jenkins" },
               { icon: <TbBrandAnsible />, name: "Ansible" },
+              { icon: <SiTerraform />, name: "Ansible" },
             ]
               .slice(0, 12)
               .map((tech) => (

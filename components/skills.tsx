@@ -131,7 +131,7 @@ export default function Skills() {
               { icon: <FaDocker />, name: "Docker" },
               { icon: <FaJenkins />, name: "Jenkins" },
               { icon: <TbBrandAnsible />, name: "Ansible" },
-              { icon: <SiTerraform />, name: "Ansible" },
+              { icon: <SiTerraform />, name: "Terraform" },
             ]
               .slice(0, 12)
               .map((tech) => (

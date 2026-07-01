@@ -21,7 +21,7 @@ export default async function About({ username }: AboutProps) {
             <h3 className="text-2xl font-semibold">Who I Am</h3>
             <p className="text-muted-foreground leading-relaxed">
               {user.bio ||
-                `I am a Computer Engineering and DevOps Engineer, dedicated to building secure, automated, and scalable environments.
+                `I am a Computer and DevOps Engineer, dedicated to building secure, automated, and scalable environments.
                   My profile sits at the intersection of Infrastructure, Security, and Development, with a focus on modern software practices.
                 `}
             </p>
